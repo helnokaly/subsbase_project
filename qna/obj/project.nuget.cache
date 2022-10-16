@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "7SSBbwC2paYOvQMln/7WXKrE2rXtwKbJF9fc9334KIfEoAEUOkWBN5m6tOReT7r6XgSUn8YCZcVapFeBAFOHoQ==",
+  "success": true,
+  "projectFilePath": "/home/hany/dev/playground/subsbase_project/qna/qna.csproj",
+  "expectedPackageFiles": [
+    "/home/hany/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/home/hany/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/home/hany/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "/home/hany/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "/home/hany/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "/home/hany/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
