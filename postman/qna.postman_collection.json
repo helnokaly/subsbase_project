@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "9df63b00-4fad-4cea-a059-a7a478b3ca89",
+		"name": "qna",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23947303"
+	},
+	"item": [
+		{
+			"name": "POST /login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"To have auth token returned in body\", function () {",
+							"    const token = pm.response.text();",
+							"    pm.expect(token).to.be.a('string').that.is.not.empty;",
+							"",
+							"    pm.variables.set('auth_token', token);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"alice\",\n    \"password\": \"wonderland\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{port}}/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"New question is created and returned\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.all.keys(['id', 'description', 'userId', 'answers']);",
+							"",
+							"    pm.variables.set('created_question_id', response.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"How tall is mount everest?\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{port}}/questions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /questions/{questionId}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 and list of questions returned\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"New question is created and returned\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.all.keys(['id', 'description', 'userId', 'answers']);",
+							"    pm.expect(response.id).to.be.equal(pm.variables.get('created_question_id'));",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:{{port}}/questions/{{created_question_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions",
+						"{{created_question_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"List of questions returned in response body\", function () {",
+							"  const response = pm.response.json();",
+							"  pm.expect(response).to.be.an('array');",
+							"  pm.expect(response.length).to.be.greaterThan(0);",
+							"  const lastQuestion = response[response.length - 1];",
+							"  pm.expect(lastQuestion).to.have.all.keys(['id', 'description', 'userId', 'answers']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:{{port}}/questions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /questions/{questionId}/answers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"New question is created and returned\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.all.keys(['id', 'description', 'userId']);",
+							"",
+							"    pm.variables.set('created_answer_id', response.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"This is an answer created from POSTMAN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{port}}/questions/{{created_question_id}}/answers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions",
+						"{{created_question_id}}",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT ​/questions​/{questionId}​/answers​/{answerId}​/votes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{port}}/questions/{{created_question_id}}/answers/{{created_answer_id}}/votes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions",
+						"{{created_question_id}}",
+						"answers",
+						"{{created_answer_id}}",
+						"votes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /questions/{questionId}/answers/{answerId}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:{{port}}/questions/{{created_question_id}}/answers/{{created_answer_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions",
+						"{{created_question_id}}",
+						"answers",
+						"{{created_answer_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /questions/{questionId}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:{{port}}/questions/{{created_question_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"questions",
+						"{{created_question_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
