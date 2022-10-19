@@ -32,6 +32,8 @@ To authenticate:
 Then the returned auth token to be sent in Authorization header in all other endpoints as following, for example:  
 Authorization: Bearer ABCDE...
 
+> Note: passwords are saved in plaintext for simplicity, in real application only hash of password+salt should be saved in database.
+
 ## Expected Deliverables
 
 - [x] Entire code should be delivered in a git repo.
